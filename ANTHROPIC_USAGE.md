@@ -32,6 +32,27 @@ echo 'ANTHROPIC_API_KEY=sk-ant-api03-...' > .env
 export ANTHROPIC_API_KEY='sk-ant-api03-...'
 ```
 
+### 方法 3: 使用兼容的 API 提供商（如智谱 AI）
+
+如果你使用的是 Anthropic 兼容接口的其他提供商，需要额外设置 `ANTHROPIC_API_BASE`：
+
+**使用智谱 AI**：
+
+```bash
+# .env 文件
+ANTHROPIC_API_KEY=your-zhipu-api-key
+ANTHROPIC_API_BASE=https://open.bigmodel.cn/api/anthropic
+```
+
+或
+
+```bash
+export ANTHROPIC_API_KEY='your-zhipu-api-key'
+export ANTHROPIC_API_BASE='https://open.bigmodel.cn/api/anthropic'
+```
+
+> 📝 **注意**：使用智谱 AI 等第三方兼容接口时，请参考 [智谱 AI 使用指南](ZHIPU_USAGE.md) 获取详细说明。
+
 ## 🧪 测试 API 连接
 
 在运行 PageIndex 之前，建议先测试 API 连接：

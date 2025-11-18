@@ -5,14 +5,18 @@ import os
 import requests
 import sys
 
-def test_anthropic_api(api_key):
+def test_anthropic_api(api_key, api_base=None):
     """测试 Anthropic API 连接"""
+
+    if not api_base:
+        api_base = os.getenv("ANTHROPIC_API_BASE", "https://api.anthropic.com/v1")
 
     print("=" * 70)
     print("Anthropic API 诊断工具")
     print("=" * 70)
     print(f"\n✅ API Key: {api_key[:20]}...{api_key[-5:]}")
     print(f"   长度: {len(api_key)} 字符")
+    print(f"   API Base: {api_base}")
 
     # 测试不同的模型
     models = [
@@ -26,7 +30,7 @@ def test_anthropic_api(api_key):
         print(f"测试模型: {model_name}")
         print(f"{'='*70}")
 
-        url = "https://api.anthropic.com/v1/messages"
+        url = f"{api_base}/messages"
 
         headers = {
             "x-api-key": api_key,
@@ -86,13 +90,16 @@ def test_anthropic_api(api_key):
 
     return None
 
-def test_simple_prompt(api_key):
+def test_simple_prompt(api_key, api_base=None):
     """测试简单的提示"""
+    if not api_base:
+        api_base = os.getenv("ANTHROPIC_API_BASE", "https://api.anthropic.com/v1")
+
     print(f"\n{'='*70}")
     print("测试完整的对话功能")
     print(f"{'='*70}")
 
-    url = "https://api.anthropic.com/v1/messages"
+    url = f"{api_base}/messages"
 
     headers = {
         "x-api-key": api_key,
@@ -132,6 +139,7 @@ def test_simple_prompt(api_key):
 
 if __name__ == "__main__":
     api_key = os.getenv("ANTHROPIC_API_KEY")
+    api_base = os.getenv("ANTHROPIC_API_BASE")
 
     if not api_key:
         print("错误: ANTHROPIC_API_KEY 环境变量未设置")
@@ -139,11 +147,15 @@ if __name__ == "__main__":
         print("  export ANTHROPIC_API_KEY='your-api-key-here'")
         print("\n或创建 .env 文件:")
         print("  echo 'ANTHROPIC_API_KEY=your-api-key-here' > .env")
-        print("\n获取 API key: https://console.anthropic.com/")
+        print("\n获取 API key:")
+        print("  Anthropic: https://console.anthropic.com/")
+        print("  智谱AI: https://open.bigmodel.cn/")
+        print("\n使用智谱AI时，还需设置:")
+        print("  export ANTHROPIC_API_BASE='https://open.bigmodel.cn/api/anthropic'")
         sys.exit(1)
 
     # 测试基本连接
-    result = test_anthropic_api(api_key)
+    result = test_anthropic_api(api_key, api_base)
 
     if result:
         print(f"\n{'='*70}")
@@ -151,7 +163,7 @@ if __name__ == "__main__":
         print(f"{'='*70}")
 
         # 测试完整对话
-        test_simple_prompt(api_key)
+        test_simple_prompt(api_key, api_base)
 
         print(f"\n{'='*70}")
         print("✅ 所有测试通过！可以使用 Anthropic API")

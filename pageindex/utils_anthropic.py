@@ -30,8 +30,8 @@ from types import SimpleNamespace as config
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 CHATGPT_API_KEY = os.getenv("CHATGPT_API_KEY")  # Keep for compatibility
 
-# Anthropic API endpoint
-ANTHROPIC_API_BASE = "https://api.anthropic.com/v1"
+# Anthropic API endpoint (支持自定义base URL，例如智谱AI)
+ANTHROPIC_API_BASE = os.getenv("ANTHROPIC_API_BASE", "https://api.anthropic.com/v1")
 ANTHROPIC_VERSION = "2023-06-01"
 
 # Model mapping (map OpenAI models to Claude models)
@@ -66,9 +66,10 @@ def count_tokens(text, model=None):
         # Fallback: rough estimation
         return len(text) // 4
 
-def call_anthropic_api(model_name, prompt, api_key=None, temperature=0, max_tokens=4096, chat_history=None):
+def call_anthropic_api(model_name, prompt, api_key=None, temperature=0, max_tokens=4096, chat_history=None, api_base=None):
     """
     Call Anthropic API using REST endpoint
+    Supports custom api_base for compatible providers (e.g., Zhipu AI)
     """
     if not api_key:
         api_key = ANTHROPIC_API_KEY
@@ -76,7 +77,10 @@ def call_anthropic_api(model_name, prompt, api_key=None, temperature=0, max_toke
     if not api_key:
         raise ValueError("ANTHROPIC_API_KEY not set")
 
-    url = f"{ANTHROPIC_API_BASE}/messages"
+    if not api_base:
+        api_base = ANTHROPIC_API_BASE
+
+    url = f"{api_base}/messages"
 
     headers = {
         "x-api-key": api_key,
