@@ -4,6 +4,10 @@
 import os
 import requests
 import sys
+from dotenv import load_dotenv
+
+# 加载 .env 文件
+load_dotenv()
 
 def test_gemini_api(api_key):
     """测试Gemini API连接"""
