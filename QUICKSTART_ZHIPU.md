@@ -39,7 +39,7 @@ python3 test_anthropic_api.py
 ```bash
 python3 run_pageindex_anthropic.py \
   --pdf_path 你的文档.pdf \
-  --model glm-4-plus
+  --model glm-4.6
 ```
 
 **等待处理完成** (大约 20-40 分钟)
@@ -68,7 +68,7 @@ python3 run_pageindex_anthropic.py \
 ```bash
 python3 run_pageindex_anthropic.py \
   --pdf_path document.pdf \
-  --model glm-4-plus \
+  --model glm-4.6 \
   --if-add-node-summary yes \
   --if-add-doc-description yes
 ```
@@ -111,7 +111,7 @@ cat .env
 
 ```bash
 # ✅ 正确
---model glm-4-plus
+--model glm-4.6
 
 # ❌ 错误（这是 Claude 的模型名）
 --model claude-3-5-sonnet-20241022

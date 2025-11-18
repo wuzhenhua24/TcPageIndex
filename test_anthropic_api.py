@@ -27,9 +27,9 @@ def test_anthropic_api(api_key, api_base=None):
     # 如果 API Base 是智谱，优先测试 GLM 模型
     if "bigmodel.cn" in api_base:
         models = [
+            "glm-4.6",
             "glm-4-plus",
             "glm-4-0520",
-            "glm-4",
         ]
     else:
         models = [
@@ -122,7 +122,7 @@ def test_simple_prompt(api_key, api_base=None):
 
     # 根据 API Base 选择合适的模型
     if "bigmodel.cn" in api_base:
-        model_name = "glm-4-plus"
+        model_name = "glm-4.6"
     else:
         model_name = "claude-3-5-sonnet-20241022"
 
