@@ -34,8 +34,12 @@ python3 test_anthropic_api.py
 
 ## 第四步：运行 PageIndex
 
+**重要**：必须指定智谱的模型名称（不是Claude的）：
+
 ```bash
-python3 run_pageindex_anthropic.py --pdf_path 你的文档.pdf
+python3 run_pageindex_anthropic.py \
+  --pdf_path 你的文档.pdf \
+  --model glm-4-plus
 ```
 
 **等待处理完成** (大约 20-40 分钟)
@@ -55,6 +59,7 @@ cat results/你的文档_tree_claude.json
 ```bash
 python3 run_pageindex_anthropic.py \
   --pdf_path document.pdf \
+  --model glm-4-air \
   --if-add-node-summary no
 ```
 
@@ -63,31 +68,68 @@ python3 run_pageindex_anthropic.py \
 ```bash
 python3 run_pageindex_anthropic.py \
   --pdf_path document.pdf \
+  --model glm-4-plus \
   --if-add-node-summary yes \
   --if-add-doc-description yes
 ```
 
-### 使用更快的模型
+### 使用超快模型（大批量处理）
 
 ```bash
 python3 run_pageindex_anthropic.py \
   --pdf_path document.pdf \
-  --model claude-3-5-haiku-20241022
+  --model glm-4-flash
 ```
 
 ---
 
 ## ❓ 遇到问题？
 
-### API Key 无效
+### 1. 403 Forbidden 错误
+
+如果看到 `403 Access denied`：
+
+```bash
+# 检查 API Key 格式
+cat .env
+
+# 确保：
+# 1. API Key 是从智谱AI控制台获取的
+# 2. 没有多余的空格或引号
+# 3. 账户有足够余额
+```
+
+**解决方法**：
+1. 访问 https://open.bigmodel.cn/
+2. 登录控制台
+3. 检查账户余额
+4. 重新生成 API Key
+
+### 2. 模型名称错误
+
+使用智谱AI时必须使用 GLM 模型：
+
+```bash
+# ✅ 正确
+--model glm-4-plus
+
+# ❌ 错误（这是 Claude 的模型名）
+--model claude-3-5-sonnet-20241022
+```
+
+### 3. API Key 环境变量未设置
+
 ```bash
 # 检查 .env 文件内容
 cat .env
 
-# 确保没有多余的空格或引号
+# 手动导出环境变量测试
+export ANTHROPIC_API_KEY='你的key'
+export ANTHROPIC_API_BASE='https://open.bigmodel.cn/api/anthropic'
+python3 test_anthropic_api.py
 ```
 
-### 网络连接失败
+### 4. 网络连接失败
 ```bash
 # 测试能否访问智谱 AI
 curl -I https://open.bigmodel.cn
@@ -96,6 +138,7 @@ curl -I https://open.bigmodel.cn
 ### 需要更多帮助
 - 详细文档：[ZHIPU_USAGE.md](ZHIPU_USAGE.md)
 - Anthropic 说明：[ANTHROPIC_USAGE.md](ANTHROPIC_USAGE.md)
+- 智谱AI文档：https://open.bigmodel.cn/dev/api
 
 ---
 

@@ -23,11 +23,20 @@ def test_anthropic_api(api_key, api_base=None):
     print(f"   API Base: {api_base}")
 
     # 测试不同的模型
-    models = [
-        "claude-3-5-sonnet-20241022",
-        "claude-3-5-haiku-20241022",
-        "claude-3-opus-20240229",
-    ]
+    # 注意：智谱AI需要使用 glm-* 模型名称
+    # 如果 API Base 是智谱，优先测试 GLM 模型
+    if "bigmodel.cn" in api_base:
+        models = [
+            "glm-4-plus",
+            "glm-4-0520",
+            "glm-4",
+        ]
+    else:
+        models = [
+            "claude-3-5-sonnet-20241022",
+            "claude-3-5-haiku-20241022",
+            "claude-3-opus-20240229",
+        ]
 
     for model_name in models:
         print(f"\n{'='*70}")
@@ -111,8 +120,14 @@ def test_simple_prompt(api_key, api_base=None):
         "content-type": "application/json",
     }
 
+    # 根据 API Base 选择合适的模型
+    if "bigmodel.cn" in api_base:
+        model_name = "glm-4-plus"
+    else:
+        model_name = "claude-3-5-sonnet-20241022"
+
     payload = {
-        "model": "claude-3-5-sonnet-20241022",
+        "model": model_name,
         "max_tokens": 200,
         "messages": [
             {"role": "user", "content": "What is 2+2? Answer in one sentence."}
