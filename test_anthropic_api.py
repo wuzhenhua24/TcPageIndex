@@ -4,6 +4,10 @@
 import os
 import requests
 import sys
+from dotenv import load_dotenv
+
+# 加载 .env 文件
+load_dotenv()
 
 def test_anthropic_api(api_key, api_base=None):
     """测试 Anthropic API 连接"""
